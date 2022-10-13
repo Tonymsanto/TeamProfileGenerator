@@ -2,15 +2,13 @@ const fs = require('fs')
 const inquirer = require('inquirer')
 
 const makeHTML = require('./src/makeHTML');
-const employee = require('./lib/employee');
-const engineer = require('./lib/engineer');
-const intern = require ('./lib/intern');
-const manager = require ('./lib/manager');
-const { type } = require('os');
-
+const Engineer = require('./lib/engineer');
+const Intern = require ('./lib/intern');
+const Manager = require ('./lib/manager');
+const team = [];
 
 //Prompts for the manager
-inquirer.prompt([
+const managerInput = [
     {
      message: 'What is the name of the manager?',
      type: 'input',
@@ -31,10 +29,10 @@ inquirer.prompt([
         type: 'input',
         name: 'officeNumber'
     }
-]);
+];
 
 //Prompts for interns and engineers
-inquirer.prompt([
+const employeeInput = [
     {
      message: 'What is the emplyee\'s role?',
      type: 'list',
@@ -71,7 +69,71 @@ inquirer.prompt([
     {
         message: 'Would you like to add another team member?',
         type: 'confirm',
-        name: 'confirmAddEmployuee',
+        name: 'confirmAddEmployee',
         default: false
     },
-]);
+];
+
+const newManager = () => {
+    return inquirer.prompt(managerInput)
+        .then(response => {
+            const { name, id, email, officeNumber } = response;
+            const manager = new Manager(name, id, email, officeNumber);
+
+            team.push(manager);
+            console.log(manager);
+        })
+};
+
+const newEmployee = () => {
+
+    return inquirer.prompt(employeeInput)
+        .then(response => {
+            // data for employee types 
+
+            let { name, id, email, role, github, school, confirmAddEmployee } = response;
+            let employee;
+
+            if (role === "Engineer") {
+                employee = new Engineer(name, id, email, github);
+                console.log(employee);
+            } else if (role === "Intern") {
+                employee = new Intern(name, id, email, school);
+                console.log(employee);
+            }
+
+            team.push(employee);
+
+            if (confirmAddEmployee) {
+                return newEmployee(team);
+            } else {
+                return team;
+            }
+        })
+
+};
+
+const writeFile = data => {
+    fs.writeFile('./dist/index.html', data, err => {
+        // if there is an error 
+        if (err) {
+            console.log(err);
+            return;
+            // when the profile has been created 
+        } else {
+            console.log("Index.html has been created!")
+        }
+    })
+};
+
+newManager()
+    .then(newEmployee)
+    .then(team => {
+        return makeHTML(team);
+    })
+    .then(employeePage => {
+        return writeFile(employeePage);
+    })
+    .catch(err => {
+        console.log(err);
+    });
