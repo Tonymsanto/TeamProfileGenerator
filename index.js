@@ -31,7 +31,7 @@ const managerInput = [
     }
 ];
 
-//Prompts for interns and engineers
+//Prompts for the interns and engineers
 const employeeInput = [
     {
      message: 'What is the emplyee\'s role?',
@@ -74,6 +74,7 @@ const employeeInput = [
     },
 ];
 
+//This is going to create a new manager object.
 const newManager = () => {
     return inquirer.prompt(managerInput)
         .then(response => {
@@ -85,12 +86,10 @@ const newManager = () => {
         })
 };
 
+//This is going to create a new employee obeject.
 const newEmployee = () => {
-
     return inquirer.prompt(employeeInput)
         .then(response => {
-            // data for employee types 
-
             let { name, id, email, role, github, school, confirmAddEmployee } = response;
             let employee;
 
@@ -113,13 +112,12 @@ const newEmployee = () => {
 
 };
 
+//This fuction is going to make an HTML page based on the inputed data.
 const writeFile = data => {
     fs.writeFile('./dist/index.html', data, err => {
-        // if there is an error 
         if (err) {
             console.log(err);
             return;
-            // when the profile has been created 
         } else {
             console.log("Index.html has been created!")
         }

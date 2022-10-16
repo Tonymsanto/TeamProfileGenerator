@@ -52,30 +52,24 @@ const makeEngineer = function(engineer) {
 }
 
 makeHTML = (input) => {
-
-    // array for team of employees 
     theTeam = [];
 
     for (let i = 0; i < input.length; i++) {
         const employee = input[i];
         const role = employee.getRole();
 
-
-        // make manager 
         if (role === 'Manager') {
             const managerInfo = makeManager(employee);
 
             theTeam.push(managerInfo);
         }
 
-        // make engineer 
         if (role === 'Engineer') {
             const engineerInfo = makeEngineer(employee);
 
             theTeam.push(engineerInfo);
         }
 
-        // make intern 
         if (role === 'Intern') {
             const internInfo = makeIntern(employee);
 
