@@ -1,7 +1,10 @@
 # TeamProfileGenerator
 
 ## Description
-This project is a way that you can create an html page with your teammates name and information. 
+This project is a way that you can create an html page with your teammatess name and information. I have incuded a walkthrough video below on how to create different employee cards and deploy that information to a local host.
+
+
+https://drive.google.com/file/d/1kOkSsLu3_X16t_F0N8TE2V0oIGbE6LvN/view?usp=sharing
 
 
 
